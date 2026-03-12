@@ -1,34 +1,32 @@
+import sys
 
-def exponenciacion_binaria(M, e, n):
-    
-    # Convertimos el exponente a binario
-    e_bin = bin(e)[2:]  
-    
-    # Inicialización
-    if e_bin[0] == '1':
-        C = M
-    else:
-        C = 1
+def exponenciacion_binaria(base, exponente, modulo):
+    resultado = 1
+    base = base % modulo
 
-    # Recorremos los bits restantes
-    for bit in e_bin[1:]:
+    while exponente > 0:
+        if exponente % 2 == 1:
+            resultado = (resultado * base) % modulo
         
-        # (a) C = C^2 mod n
-        C = (C * C) % n
-        
-        # (b) si el bit es 1 multiplicamos por M
-        if bit == '1':
-            C = (C * M) % n
+        exponente = exponente // 2
+        base = (base * base) % modulo
 
-    return C
+    return resultado
 
 
-# Pedir datos al usuario
-base = int(input("Ingrese la base: "))
-exponente = int(input("Ingrese el exponente: "))
-modulo = int(input("Ingrese el módulo: "))
+def main():
+    # Leer toda la entrada que manda el autograder
+    datos = sys.stdin.read().split()
 
-# Calcular resultado
-resultado = exponenciacion_binaria(base, exponente, modulo)
+    base = int(datos[0])
+    exponente = int(datos[1])
+    modulo = int(datos[2])
 
-print("Resultado:", resultado)
+    resultado = exponenciacion_binaria(base, exponente, modulo)
+
+    # El autograder solo espera el número
+    print(resultado)
+
+
+if __name__ == "__main__":
+    main()
